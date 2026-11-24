@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For you</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Shantell+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6E1DC;
+    --ink: #2E1A2B;
+    --ink-soft: #6B4E62;
+    --cherry: #9B1F3F;
+    --card: #FFFCF8;
+    --tape: rgba(242, 210, 122, 0.8);
+    --line: rgba(155, 31, 63, 0.14);
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(155, 31, 63, 0.07) 1px, transparent 1.6px);
+    background-size: 18px 18px;
+    color: var(--ink);
+    font-family: "Shantell Sans", ui-rounded, system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  main {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: env(safe-area-inset-top, 0px) 1.25rem calc(3rem + env(safe-area-inset-bottom, 0px));
+  }
+  h1, h2, .big {
+    font-family: "Caprasimo", Georgia, serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--cherry); outline-offset: 4px; border-radius: 6px; }
+
+  /* Hero */
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 0 2rem;
+  }
+  h1 {
+    font-size: clamp(2.75rem, 13vw, 4.5rem);
+    line-height: 1;
+    color: var(--cherry);
+    margin: 0 0 1.5rem;
+  }
+  .since { margin: 0; font-size: 1.15rem; }
+  .big {
+    display: block;
+    font-size: clamp(3.5rem, 20vw, 6.5rem);
+    line-height: 1;
+    color: var(--ink);
+    margin: 0.35rem 0 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .rest { font-variant-numeric: tabular-nums; }
+  .quip { color: var(--ink-soft); margin: 1.25rem 0 0; }
+  .cue { margin-top: 3rem; color: var(--cherry); font-weight: 600; }
+
+  /* Timeline */
+  h2 {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    line-height: 1.1;
+    margin: 4rem 0 2rem;
+  }
+  .timeline { list-style: none; margin: 0; padding: 0; }
+  .moment { margin: 0 0 3.5rem; }
+  .moment:nth-child(odd)  { --tilt: -2.2deg; }
+  .moment:nth-child(even) { --tilt: 1.8deg; }
+  .polaroid {
+    position: relative;
+    margin: 0 auto 1.25rem;
+    width: min(100%, 22rem);
+    background: var(--card);
+    padding: 0.75rem 0.75rem 2.25rem;
+    transform: rotate(var(--tilt));
+    box-shadow: 0 2px 3px rgba(46, 26, 43, 0.12), 0 14px 28px -12px rgba(46, 26, 43, 0.35);
+  }
+  .polaroid::before {
+    content: "";
+    position: absolute;
+    top: -0.8rem;
+    left: 50%;
+    width: 6.5rem;
+    height: 1.6rem;
+    background: var(--tape);
+    transform: translateX(-50%) rotate(calc(var(--tilt) * -2));
+  }
+  .polaroid img, .ph {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: #EADAD5;
+  }
+  .ph {
+    display: grid;
+    place-items: center;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    background: repeating-linear-gradient(45deg, #EFDDD8 0 12px, #E7D2CC 12px 24px);
+  }
+  .date { color: var(--cherry); font-weight: 600; margin: 0; }
+  .moment h3 { font-size: 1.35rem; line-height: 1.25; margin: 0.15rem 0 0.4rem; }
+  .moment p { margin: 0 0 0.5rem; }
+  .aside { font-style: italic; color: var(--ink-soft); }
+
+  /* Letter */
+  .envelope {
+    display: block;
+    position: relative;
+    width: min(100%, 22rem);
+    aspect-ratio: 3 / 2;
+    margin: 0 auto;
+    border: none;
+    background: var(--cherry);
+    color: var(--card);
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 14px 28px -12px rgba(46, 26, 43, 0.45);
+  }
+  .envelope::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 45% 0;
+    background: #B8304F;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+  .envelope span {
+    position: absolute;
+    left: 0; right: 0; bottom: 18%;
+    font-family: "Caprasimo", Georgia, serif;
+    font-size: 1.5rem;
+  }
+  .letter {
+    background-color: var(--card);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.85em - 1px), var(--line) calc(1.85em - 1px) 1.85em);
+    background-position: 0 1.4rem;
+    padding: 1.4rem 1.4rem 1.75rem;
+    line-height: 1.85;
+    box-shadow: 0 14px 28px -12px rgba(46, 26, 43, 0.35);
+    transform-origin: top center;
+    animation: unfold 0.7s cubic-bezier(.2,.8,.2,1);
+  }
+  .letter p { margin: 0 0 1.85em; }
+  .letter .sign { margin: 0; }
+  @keyframes unfold {
+    from { opacity: 0; transform: scaleY(0.6) translateY(-1rem); }
+    to   { opacity: 1; transform: none; }
+  }
+  .more {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 0.85rem 1.6rem;
+    background: var(--ink);
+    color: var(--card);
+    border: none;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .reveal {
+    margin-top: 2rem;
+    text-align: center;
+    animation: unfold 0.7s cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal h3 {
+    font-family: "Caprasimo", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.9rem, 8vw, 2.5rem);
+    line-height: 1.1;
+    color: var(--cherry);
+    margin: 0 0 0.5rem;
+  }
+  .reveal p { margin: 0; font-size: 1.15rem; }
+  [hidden] { display: none !important; }
+
+  footer { margin-top: 5rem; text-align: center; color: var(--ink-soft); font-size: 0.9rem; }
+
+  /* Hearts */
+  .heart {
+    position: fixed;
+    top: -2rem;
+    pointer-events: none;
+    font-size: 1.5rem;
+    animation: fall linear forwards;
+    z-index: 10;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(var(--spin)); opacity: 0.9; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letter, .reveal { animation: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>Hey <span data-her></span>,</h1>
+    <p class="since">We’ve been us for</p>
+    <span class="big" id="days">0 days</span>
+    <p class="since rest" id="rest">and counting.</p>
+    <p class="quip" id="quip"></p>
+    <p class="cue">Scroll down. I made you something.</p>
+  </section>
+
+  <section aria-labelledby="year-title">
+    <h2 id="year-title">Our year, so far</h2>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <section aria-labelledby="letter-title">
+    <h2 id="letter-title">One more page</h2>
+    <button class="envelope" id="envelope" aria-label="Open your letter"><span>Open me</span></button>
+    <article class="letter" id="letter" hidden>
+      <p>Dear <span data-her></span>,</p>
+      <div id="letter-body"></div>
+      <p class="sign">Love,<br><span data-me></span></p>
+    </article>
+    <button class="more" id="more" hidden>One more thing</button>
+    <div class="reveal" id="reveal" hidden>
+      <h3 id="reveal-title"></h3>
+      <p id="reveal-details"></p>
+    </div>
+  </section>
+
+  <footer>Made by <span data-me></span>, with too much coffee and a lot of love.</footer>
+</main>
+
+<script>
+/* ============================================================
+   EDIT EVERYTHING IN THIS BLOCK. Nothing below it needs to change.
+   Photos: put them in a "photos" folder next to this file
+   (one-year/photos/1.jpg, 2.jpg ...). Missing photos show a placeholder.
+   ============================================================ */
+const CONFIG = {
+  herName: "[Her name]",
+  yourName: "[Your name]",
+  // When you got together: "YYYY-MM-DDTHH:MM:SS" in your local time. Time is optional.
+  startDate: "2025-11-25T19:00:00",
+
+  timeline: [
+    {
+      date: "[Month, year]",
+      title: "[The day we met]",
+      text: "[Where you were and the first thing you noticed about her.]",
+      aside: "[Optional funny line, like: “You thought I was quiet. I was terrified.”]",
+      photo: "photos/1.jpg"
+    },
+    {
+      date: "[Month, year]",
+      title: "[Our first date]",
+      text: "[Where you went and one detail you still remember.]",
+      aside: "[Optional: what went wrong, if anything did.]",
+      photo: "photos/2.jpg"
+    },
+    {
+      date: "[Month, year]",
+      title: "[The first “I love you”]",
+      text: "[Who said it first, and where.]",
+      aside: "",
+      photo: "photos/3.jpg"
+    },
+    {
+      date: "[Month, year]",
+      title: "[Our first trip]",
+      text: "[Where you went and your favorite moment.]",
+      aside: "[Optional: the thing you still argue about from that trip.]",
+      photo: "photos/4.jpg"
+    },
+    {
+      date: "[Month, year]",
+      title: "[The disaster we laugh about now]",
+      text: "[What happened.]",
+      aside: "[Optional: who was right. Be careful here.]",
+      photo: "photos/5.jpg"
+    },
+    {
+      date: "[Month, year]",
+      title: "[A small moment that’s very us]",
+      text: "[Something ordinary you love doing together.]",
+      aside: "",
+      photo: "photos/6.jpg"
+    }
+  ],
+
+  letter: [
+    "[Start with what this year has meant to you.]",
+    "[Something specific you love about her that she might not know you’ve noticed.]",
+    "[What you’re looking forward to in year two.]"
+  ],
+
+  reveal: {
+    title: "[The surprise]",
+    details: "[For example: Saturday, 7pm. Wear something nice. I’m driving.]"
+  }
+};
+
+/* ---------- page logic ---------- */
+document.querySelectorAll("[data-her]").forEach(el => el.textContent = CONFIG.herName);
+document.querySelectorAll("[data-me]").forEach(el => el.textContent = CONFIG.yourName);
+document.title = "For " + CONFIG.herName;
+
+const start = new Date(CONFIG.startDate);
+const daysEl = document.getElementById("days");
+const restEl = document.getElementById("rest");
+const quipEl = document.getElementById("quip");
+const plural = (n, word) => n + " " + word + (n === 1 ? "" : "s");
+
+function tick() {
+  const diff = Math.max(0, Date.now() - start.getTime());
+  const s = Math.floor(diff / 1000);
+  const days = Math.floor(s / 86400);
+  const hours = Math.floor((s % 86400) / 3600);
+  const mins = Math.floor((s % 3600) / 60);
+  const secs = s % 60;
+  daysEl.textContent = plural(days, "day");
+  restEl.textContent = "and " + plural(hours, "hour") + ", " + plural(mins, "minute") + ", " + plural(secs, "second") + ".";
+  quipEl.textContent = "That’s about " + Math.floor(s / 60).toLocaleString() +
+    " minutes of me thinking about you. Conservative estimate.";
+}
+tick();
+setInterval(tick, 1000);
+
+const list = document.getElementById("timeline");
+CONFIG.timeline.forEach(m => {
+  const li = document.createElement("li");
+  li.className = "moment";
+
+  const fig = document.createElement("figure");
+  fig.className = "polaroid";
+  const placeholder = () => {
+    const ph = document.createElement("div");
+    ph.className = "ph";
+    ph.textContent = "Photo goes here";
+    return ph;
+  };
+  if (m.photo) {
+    const img = document.createElement("img");
+    img.src = m.photo;
+    img.alt = m.title;
+    img.loading = "lazy";
+    img.onerror = () => img.replaceWith(placeholder());
+    fig.appendChild(img);
+  } else {
+    fig.appendChild(placeholder());
+  }
+  li.appendChild(fig);
+
+  const date = document.createElement("p");
+  date.className = "date";
+  date.textContent = m.date;
+  const title = document.createElement("h3");
+  title.textContent = m.title;
+  const text = document.createElement("p");
+  text.textContent = m.text;
+  li.append(date, title, text);
+
+  if (m.aside) {
+    const aside = document.createElement("p");
+    aside.className = "aside";
+    aside.textContent = m.aside;
+    li.appendChild(aside);
+  }
+  list.appendChild(li);
+});
+
+const body = document.getElementById("letter-body");
+CONFIG.letter.forEach(t => {
+  const p = document.createElement("p");
+  p.textContent = t;
+  body.appendChild(p);
+});
+document.getElementById("reveal-title").textContent = CONFIG.reveal.title;
+document.getElementById("reveal-details").textContent = CONFIG.reveal.details;
+
+const envelope = document.getElementById("envelope");
+const letter = document.getElementById("letter");
+const more = document.getElementById("more");
+const reveal = document.getElementById("reveal");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+envelope.addEventListener("click", () => {
+  envelope.hidden = true;
+  letter.hidden = false;
+  more.hidden = false;
+  letter.setAttribute("tabindex", "-1");
+  letter.focus({ preventScroll: true });
+});
+
+more.addEventListener("click", () => {
+  more.hidden = true;
+  reveal.hidden = false;
+  reveal.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+  if (!reduceMotion) hearts();
+});
+
+function hearts() {
+  const glyphs = ["❤️", "💕", "💖", "💘"];
+  for (let i = 0; i < 36; i++) {
+    const h = document.createElement("span");
+    h.className = "heart";
+    h.textContent = glyphs[i % glyphs.length];
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = 2.5 + Math.random() * 2.5 + "s";
+    h.style.animationDelay = Math.random() * 1.2 + "s";
+    h.style.setProperty("--spin", (Math.random() * 360 - 180) + "deg");
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 6500);
+  }
+}
+</script>
+</body>
+</html>
